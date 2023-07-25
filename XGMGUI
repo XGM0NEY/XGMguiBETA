@@ -1,0 +1,140 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+   Name = "🔥💯XGM's Gui💯🔥(BETA)",
+   LoadingTitle = "Loading epic gui",
+   LoadingSubtitle = "by xgmoney",
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = nil, -- Create a custom folder for your hub/game
+      FileName = "XGM'sepic Hub"
+   },
+   Discord = {
+      Enabled = false,
+      Invite = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ABCD would be ABCD
+      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+   },
+   KeySystem = false, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "XGM's Gui | Key",
+      Subtitle = "Key is in #key in discord server",
+      Note = "No method of obtaining the key is provided",
+      FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+   }
+})
+
+local MainTab = Window:CreateTab("Main", nil) -- Title, Image
+local Section = MainTab:CreateSection("Player")
+
+Rayfield:Notify({
+   Title = "Ive got ur ip (IM KIDDING I SWEAR)",
+   Content = "Have Fun!",
+   Duration = 4,
+   Image = nil,
+   Actions = { -- Notification Buttons
+      Ignore = {
+         Name = "ok",
+         Callback = function()
+         print("The user tapped ok")
+      end
+   },
+},
+})
+
+local Slider = MainTab:CreateSlider({
+   Name = "Walkspeed",
+   Range = {0, 300},
+   Increment = 1,
+   Suffix = "speed",
+   CurrentValue = 16,
+   Flag = "ws", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = (Value)
+   end,
+})
+
+local Slider = MainTab:CreateSlider({
+   Name = "JumpPower",
+   Range = {0, 300},
+   Increment = 1,
+   Suffix = "Power",
+   CurrentValue = 50,
+   Flag = "jp", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = (Value)
+   end,
+})
+
+local Toggle = MainTab:CreateToggle({
+   Name = "Inf Jump",
+   CurrentValue = false,
+   Flag = "Toggleinfjump", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+local UserInputService = game:GetService("UserInputService")
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+local jumping = false
+
+function onJumpAction(actionName, inputState, inputObject)
+    if inputState == Enum.UserInputState.Begin then
+        jumping = true
+        while jumping do
+            humanoid.Jump = true
+            wait()
+        end
+    elseif inputState == Enum.UserInputState.End then
+        jumping = false
+        humanoid.Jump = false
+    end
+end
+
+UserInputService.InputBegan:Connect(function(input, isProcessed)
+    if input.KeyCode == Enum.KeyCode.Space then
+        onJumpAction("jump", Enum.UserInputState.Begin, input)
+    end
+end)
+
+UserInputService.InputEnded:Connect(function(input, isProcessed)
+    if input.KeyCode == Enum.KeyCode.Space then
+        onJumpAction("jump", Enum.UserInputState.End, input)
+    end
+end)
+
+   end,
+})
+
+local Toggle = Tab:CreateToggle({
+   Name = "Godmode",
+   CurrentValue = false,
+   Flag = "Togglegod", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+-- Replace this function with the one that retrieves the player object from your game.
+function getPlayerObject()
+    -- Replace this with your code to get the player object.
+    -- This function should return the object representing the player in your game.
+    -- For example, if the player object is stored in a global variable called "player",
+    -- you can return it like this:
+    -- return player
+end
+
+-- Function to set the player's health to a very high value (infinite health).
+function setInfiniteHealth()
+    local player = getPlayerObject()
+    if player then
+        -- Set the player's health to a very high value (e.g., 99999).
+        player.health = 9999999
+    else
+        print("Player object not found.")
+    end
+end
+
+-- Call the function to set infinite health when needed.
+setInfiniteHealth()
+
+   end,
+})
